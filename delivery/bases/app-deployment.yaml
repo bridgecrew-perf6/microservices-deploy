@@ -1,0 +1,36 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: delivery
+  labels:
+    app: delivery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: delivery
+  template:
+    metadata:
+      labels:
+        app: delivery
+    spec:
+      containers:
+      - image: image-registry.openshift-image-registry.svc:5000/microservices/delivery
+        name: webserver
+        ports:
+          - containerPort: 9000
+            protocol: TCP
+        envFrom:
+          - configMapRef:
+              name: rabbitmq-connection-credentials
+          - configMapRef:
+              name: delivery-configuration
+
+      - image: image-registry.openshift-image-registry.svc:5000/microservices/delivery
+        name: queue-consumer
+        envFrom:
+          - configMapRef:
+              name: rabbitmq-connection-credentials
+          - configMapRef:
+              name: delivery-configuration
+        command: ["python", "-u", "manage.py", "consume_queues"]

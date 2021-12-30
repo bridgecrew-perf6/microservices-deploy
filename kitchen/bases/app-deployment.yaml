@@ -1,0 +1,36 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: kitchen
+  labels:
+    app: kitchen
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kitchen
+  template:
+    metadata:
+      labels:
+        app: kitchen
+    spec:
+      containers:
+      - image: image-registry.openshift-image-registry.svc:5000/microservices/kitchen
+        name: webserver
+        ports:
+          - containerPort: 9000
+            protocol: TCP
+        envFrom:
+          - configMapRef:
+              name: rabbitmq-connection-credentials
+          - configMapRef:
+              name: kitchen-configuration
+
+      - image: image-registry.openshift-image-registry.svc:5000/microservices/kitchen
+        name: queue-consumer
+        envFrom:
+          - configMapRef:
+              name: rabbitmq-connection-credentials
+          - configMapRef:
+              name: kitchen-configuration
+        command: ["python", "-u", "manage.py", "consume_queues"]

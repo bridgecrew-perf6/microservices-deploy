@@ -1,0 +1,12 @@
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: delivery-db
+spec:
+  ports:
+  - protocol: TCP
+    targetPort: 5432
+    port: 5432
+  selector:
+    app: delivery-db

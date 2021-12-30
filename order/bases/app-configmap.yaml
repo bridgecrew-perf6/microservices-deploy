@@ -1,0 +1,10 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: order-configuration
+data:
+  DB_HOST: order-db
+  DB_USER: postgres
+  DB_PASSWORD: password
+  DB_NAME: order_db

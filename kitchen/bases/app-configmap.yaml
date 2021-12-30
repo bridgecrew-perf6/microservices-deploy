@@ -1,0 +1,10 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kitchen-configuration
+data:
+  DB_HOST: kitchen-db
+  DB_USER: postgres
+  DB_PASSWORD: password
+  DB_NAME: kitchen_db

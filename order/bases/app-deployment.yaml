@@ -1,0 +1,36 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: order
+  labels:
+    app: order
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order
+  template:
+    metadata:
+      labels:
+        app: order
+    spec:
+      containers:
+      - image: image-registry.openshift-image-registry.svc:5000/microservices/order
+        name: webserver
+        ports:
+          - containerPort: 9000
+            protocol: TCP
+        envFrom:
+          - configMapRef:
+              name: rabbitmq-connection-credentials
+          - configMapRef:
+              name: order-configuration
+
+      - image: image-registry.openshift-image-registry.svc:5000/microservices/order
+        name: queue-consumer
+        envFrom:
+          - configMapRef:
+              name: rabbitmq-connection-credentials
+          - configMapRef:
+              name: order-configuration
+        command: ["watchmedo", "auto-restart", "--directory=./", "--pattern=*.py", "--recursive", "--", "python", "-u", "manage.py", "consume_queues"]

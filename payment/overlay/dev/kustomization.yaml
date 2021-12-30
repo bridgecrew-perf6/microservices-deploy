@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Base resources (shared amongst environments)
+resources:
+- ../../bases
+
+images:
+- name: image-registry.openshift-image-registry.svc:5000/microservices/payment
+  newName: k3d-microservices-registry:38597/microservices/payment

@@ -1,0 +1,5 @@
+namePrefix:
+- path: metadata/name
+  kind: Job
+- path: metadata/name
+  kind: ConfigMap

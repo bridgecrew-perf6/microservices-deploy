@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Base resources (shared amongst environments)
+resources:
+- ../../bases
+images:
+- name: image-registry.openshift-image-registry.svc:5000/microservices/payment
+  newTag: 1a599846ddf194f2a295cf5ddbdfb9b36fac3d3b
+nameSuffix: -1a599846ddf194f2a295cf5ddbdfb9b36fac3d3b

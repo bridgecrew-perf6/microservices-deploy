@@ -1,0 +1,11 @@
+
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: kitchen
+spec:
+  host: kitchen.apps.pascal-okd.appalia.net
+  to:
+    kind: Service
+    name: kitchen
+    

@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrate-delivery-db
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      containers:
+      - name: delivery
+        image: image-registry.openshift-image-registry.svc:5000/microservices/delivery:latest
+        command: ["python", "manage.py", "migrate"]
+        envFrom:
+          - configMapRef:
+              name: delivery-configuration
+      restartPolicy: Never
+  backoffLimit: 4

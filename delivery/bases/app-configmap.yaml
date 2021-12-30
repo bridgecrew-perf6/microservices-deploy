@@ -1,0 +1,10 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: delivery-configuration
+data:
+  DB_HOST: delivery-db
+  DB_USER: postgres
+  DB_PASSWORD: password
+  DB_NAME: delivery_db

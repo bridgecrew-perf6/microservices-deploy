@@ -1,0 +1,36 @@
+
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: kitchen-db
+spec:
+  replicas: 1
+  serviceName: kitchen-db-inst
+  selector:
+    matchLabels:
+      app: kitchen-db
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: kitchen-db
+    spec:
+      containers:
+      - image: public.ecr.aws/bitnami/postgresql:9.6.20
+        name: postgresql
+        ports:
+          - containerPort: 5432
+            protocol: TCP
+        env:
+          - name: POSTGRESQL_PASSWORD
+            value: password
+          - name: POSTGRESQL_DATABASE
+            value: kitchen_db
+
+        volumeMounts:
+          - mountPath: "/bitnami/postgresql "
+            name: storage
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: kitchen-db

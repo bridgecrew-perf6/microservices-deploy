@@ -1,0 +1,11 @@
+
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: order
+spec:
+  host: order.apps.pascal-okd.appalia.net
+  to:
+    kind: Service
+    name: order
+    

@@ -1,0 +1,36 @@
+
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: delivery-db
+spec:
+  replicas: 1
+  serviceName: delivery-db-inst
+  selector:
+    matchLabels:
+      app: delivery-db
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: delivery-db
+    spec:
+      containers:
+      - image: public.ecr.aws/bitnami/postgresql:9.6.20
+        name: postgresql
+        ports:
+          - containerPort: 5432
+            protocol: TCP
+        env:
+          - name: POSTGRESQL_PASSWORD
+            value: password
+          - name: POSTGRESQL_DATABASE
+            value: delivery_db
+
+        volumeMounts:
+          - mountPath: "/bitnami/postgresql "
+            name: storage
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: delivery-db

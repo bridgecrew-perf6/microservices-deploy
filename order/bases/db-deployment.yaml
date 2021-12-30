@@ -1,0 +1,36 @@
+
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: order-db
+spec:
+  serviceName: order-db-inst
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-db
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: order-db
+    spec:
+      containers:
+      - image: public.ecr.aws/bitnami/postgresql:9.6.20
+        name: postgresql
+        ports:
+          - containerPort: 5432
+            protocol: TCP
+        env:
+          - name: POSTGRESQL_PASSWORD
+            value: password
+          - name: POSTGRESQL_DATABASE
+            value: order_db
+
+        volumeMounts:
+          - mountPath: "/bitnami/postgresql "
+            name: storage
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: order-db

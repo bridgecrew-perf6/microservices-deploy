@@ -1,0 +1,13 @@
+
+global:
+  imageRegistry: public.ecr.aws
+
+replicaCount: 1
+auth:
+  username: rabbit
+  password: carrot
+  erlangCookie: SfrgpGeZv5zAbLTrCPKenjpNQWb6IBtl
+persistence:
+  enabled: false
+podSecurityContext:
+  enabled: false

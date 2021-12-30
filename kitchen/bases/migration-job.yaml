@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrate-kitchen-db
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      containers:
+      - name: kitchen
+        image: image-registry.openshift-image-registry.svc:5000/microservices/kitchen:latest
+        command: ["python", "manage.py", "migrate"]
+        envFrom:
+          - configMapRef:
+              name: kitchen-configuration
+      restartPolicy: Never
+  backoffLimit: 4

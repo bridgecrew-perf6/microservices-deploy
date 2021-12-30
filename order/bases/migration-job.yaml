@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrate-order-db
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      containers:
+      - name: order
+        image: image-registry.openshift-image-registry.svc:5000/microservices/order:latest
+        command: ["python", "manage.py", "migrate"]
+        envFrom:
+          - configMapRef:
+              name: order-configuration
+      restartPolicy: Never
+  backoffLimit: 4
