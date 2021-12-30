@@ -13,6 +13,7 @@ spec:
     metadata:
       labels:
         app: order
+        auto-devspace-popup: "true"
     spec:
       containers:
       - image: image-registry.openshift-image-registry.svc:5000/microservices/order
@@ -25,6 +26,12 @@ spec:
               name: rabbitmq-connection-credentials
           - configMapRef:
               name: order-configuration
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 9000
+          initialDelaySeconds: 5
+          periodSeconds: 30
 
       - image: image-registry.openshift-image-registry.svc:5000/microservices/order
         name: queue-consumer

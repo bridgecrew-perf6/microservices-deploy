@@ -25,6 +25,12 @@ spec:
               name: rabbitmq-connection-credentials
           - configMapRef:
               name: kitchen-configuration
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 9000
+          initialDelaySeconds: 5
+          periodSeconds: 30
 
       - image: image-registry.openshift-image-registry.svc:5000/microservices/kitchen
         name: queue-consumer
