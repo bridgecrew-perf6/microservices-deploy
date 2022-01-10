@@ -40,3 +40,12 @@ spec:
           - configMapRef:
               name: delivery-configuration
         command: ["python", "-u", "manage.py", "consume_queues"]
+        livenessProbe:
+          exec:
+            command:
+            - python
+            - -u
+            - manage.py
+            - mq_healthz
+          initialDelaySeconds: 5
+          periodSeconds: 30

@@ -13,6 +13,7 @@ spec:
     metadata:
       labels:
         app: kitchen
+        kitchen-devspace-popup: "true"
     spec:
       containers:
       - image: image-registry.openshift-image-registry.svc:5000/microservices/kitchen
@@ -25,6 +26,9 @@ spec:
               name: rabbitmq-connection-credentials
           - configMapRef:
               name: kitchen-configuration
+        env:
+          - name: RUN_CELERY
+            value: "true"
         livenessProbe:
           httpGet:
             path: /healthz
@@ -40,3 +44,12 @@ spec:
           - configMapRef:
               name: kitchen-configuration
         command: ["python", "-u", "manage.py", "consume_queues"]
+        livenessProbe:
+          exec:
+            command:
+            - python
+            - -u
+            - manage.py
+            - mq_healthz
+          initialDelaySeconds: 5
+          periodSeconds: 30
